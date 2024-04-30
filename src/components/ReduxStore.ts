@@ -1,17 +1,8 @@
-import { createStore, combineReducers, applyMiddleware, compose, Store, AnyAction } from 'redux';
-import todoReducer, { State } from './ReduxReducers.ts';
-import { thunk } from 'redux-thunk';
+import { configureStore } from '@reduxjs/toolkit';
+import todoReducer from './ReduxReducers.ts';
 
-
-const composeEnhancers = (window as any).__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
-const store = createStore<State, any, any, any>(
-  todoReducer,
-  composeEnhancers(applyMiddleware(thunk))
-);
+const store = configureStore({
+  reducer: todoReducer,
+});
 
 export default store;
-
-/*const store = createStore(todoReducer);
-export default store;*/
-
