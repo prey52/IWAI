@@ -1,21 +1,30 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import TodoList from './components/TodoList.tsx';
-import { Provider } from 'react-redux';
-import store from './components/ReduxStore.ts';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import TodoAPI from './components/TodoAPI.tsx';
-
+import About from './components/About.tsx';
 
 const App: React.FC = () => {
   return (
-    <Provider store={store}>
+    <Router>
       <div className="App">
-        <h1>Zadania do zrobienia <br />by Arkadiusz Żurek</h1>
-        {/*<TodoList />*/}
-        <TodoAPI />
+        <nav>
+          <div className="link">
+            <Link to="/">Home</Link>
+          </div>
+          <div className="link">
+            <Link to="/about">O Aplikacji</Link>
+          </div>
+        </nav>
+
+        <Routes>
+          <Route path="/" element={<>
+            <h1>Zadania do zrobienia <br />by Arkadiusz Żurek</h1>
+            <TodoAPI />
+          </>} />
+          <Route path="/about" element={<About />} />
+        </Routes>
       </div>
-    </Provider>
-    
+    </Router>
   );
 };
 
