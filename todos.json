@@ -1,0 +1,31 @@
+{
+  "daily": [
+    {
+      "id": 2,
+      "title": "Przerobić apkę TODO",
+      "completed": true
+    },
+    {
+      "id": 1717448900590,
+      "title": "ffaw",
+      "completed": true
+    },
+    {
+      "id": 1717539010586,
+      "title": "w",
+      "completed": false
+    },
+    {
+      "id": 1717539522781,
+      "title": "ff",
+      "completed": false
+    }
+  ],
+  "tasks": [
+    {
+      "id": 1717539220194,
+      "title": "fwa",
+      "completed": false
+    }
+  ]
+}
