@@ -11,7 +11,7 @@ const TodoItemAPI: React.FC<TodoItemProps> = ({ todo, type, onUpdate }) => {
   const handleToggle = async () => {
     try {
       console.log(`Toggling todo: ${JSON.stringify(todo)}`);
-      const response = await axios.patch(`http://localhost:3001/api/todos/${type}/${todo.id}`, {
+      const response = await axios.patch(`https://todojsonserver.azurewebsites.net/api/todos${type}/${todo.id}`, {
         completed: !todo.completed,
       });
       console.log(`Toggle response: ${JSON.stringify(response.data)}`);
@@ -24,7 +24,7 @@ const TodoItemAPI: React.FC<TodoItemProps> = ({ todo, type, onUpdate }) => {
   const handleRemove = async () => {
     try {
       console.log(`Removing todo: ${JSON.stringify(todo)}`);
-      const response = await axios.delete(`http://localhost:3001/api/todos/${type}/${todo.id}`);
+      const response = await axios.delete(`https://todojsonserver.azurewebsites.net/api/todos${type}/${todo.id}`);
       console.log(`Remove response: ${JSON.stringify(response.data)}`);
       onUpdate();
     } catch (error) {
