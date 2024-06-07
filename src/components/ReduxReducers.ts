@@ -6,53 +6,84 @@ export interface Todo {
   completed?: boolean;
 }
 
-export interface State {
+interface State {
   daily: Todo[];
   tasks: Todo[];
 }
 
-const initialState: State = {
-  daily: [
-    { id: 1, title: 'Zrobić apkę TODO', completed: true },
-    { id: 2, title: 'Przerobić apkę TODO', completed: true },
-    { id: 3, title: 'Wysłać apkę TODO', completed: false }
-  ],
-  tasks: [
-    { id: 5, title: 'Redux (w bólach) dodany'},
-    { id: 6, title: 'Redux devtools też działają, jednak co mi krwi napsuły to moje'},
-    { id: 7, title: 'Raz mi pokazały zmiany stanu + aktualny stan, a później nie'},
-    { id: 8, title: 'Po ponad 2-ch godzinach testowania wszelkich sposobów tworzenia sklepu trafiłem na informację, ...'},
-    { id: 9, title: '... że w chrome to świruje. W edge działa jak należy. Ja mam już dość :('},
-  ]
+const loadStateFromLocalStorage = (): State | undefined => {
+  try {
+    const serializedState = localStorage.getItem('todosState');
+    if (serializedState === null) {
+      return undefined;
+    }
+    return JSON.parse(serializedState);
+  } catch (err) {
+    console.error('Error loading state from localStorage:', err);
+    return undefined;
+  }
+};
+
+const saveStateToLocalStorage = (state: State) => {
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem('todosState', serializedState);
+  } catch (err) {
+    console.error('Error saving state to localStorage:', err);
+  }
+};
+
+const initialState: State = loadStateFromLocalStorage() || {
+  daily: [],
+  tasks: []
 };
 
 const todoReducer = (state = initialState, action: any) => {
-      switch (action.type) {
-        case ADD_TODO:
-          return {
-            ...state,
-            [action.payload.type]: [...state[action.payload.type], action.payload.todo]
-          };
+  switch (action.type) {
+    case ADD_TODO:
+      const newStateAdd = {
+        ...state,
+        [action.payload.type]: [...state[action.payload.type], action.payload.todo]
+      };
+      saveStateToLocalStorage(newStateAdd);
+      return newStateAdd;
 
-        case REMOVE_TODO:
-          return {
-            ...state, 
-            [action.payload.type]: state[action.payload.type].filter((todo: Todo) =>
-              todo.id !== action.payload.id)
-          };
+    case REMOVE_TODO:
+      const newStateRemove = {
+        ...state,
+        [action.payload.type]: state[action.payload.type].filter((todo: Todo) =>
+          todo.id !== action.payload.id)
+      };
+      saveStateToLocalStorage(newStateRemove);
+      return newStateRemove;
 
-          case TOGGLE_TODO:
-            return {
-              ...state,
-              daily: state.daily.map(todo =>
-                todo.id === action.payload ? { ...todo, completed: !todo.completed } : todo
-              )
-            };
+    case TOGGLE_TODO:
+      const newStateToggle = {
+        ...state,
+        daily: state.daily.map(todo =>
+          todo.id === action.payload ? { ...todo, completed: !todo.completed } : todo
+        )
+      };
+      saveStateToLocalStorage(newStateToggle);
+      return newStateToggle;
 
-
-        default:
-          return state;
-      }
+    default:
+      return state;
+  }
 };
+
+const resetDailyTasks = () => {
+  const currentTime = new Date();
+  if (currentTime.getHours() === 0 && currentTime.getMinutes() === 0) {
+    const updatedState = {
+      ...initialState,
+      daily: initialState.daily.map(todo => ({ ...todo, completed: false }))
+    };
+    saveStateToLocalStorage(updatedState);
+  }
+};
+
+
+setInterval(resetDailyTasks, 60000);
 
 export default todoReducer;
