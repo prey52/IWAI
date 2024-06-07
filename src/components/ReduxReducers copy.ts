@@ -18,11 +18,7 @@ const initialState: State = {
     { id: 3, title: 'Wysłać apkę TODO', completed: false }
   ],
   tasks: [
-    { id: 5, title: 'Redux (w bólach) dodany'},
-    { id: 6, title: 'Redux devtools też działają, jednak co mi krwi napsuły to moje'},
-    { id: 7, title: 'Raz mi pokazały zmiany stanu + aktualny stan, a później nie'},
-    { id: 8, title: 'Po ponad 2-ch godzinach testowania wszelkich sposobów tworzenia sklepu trafiłem na informację, ...'},
-    { id: 9, title: '... że w chrome to świruje. W edge działa jak należy. Ja mam już dość :('},
+    { id: 4, title: 'Redux dodany'},
   ]
 };
 
